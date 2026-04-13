@@ -1,0 +1,333 @@
+---
+import { getCollection } from "astro:content";
+import Layout from "../../layouts/Layout.astro";
+import ArticleCard from "../../components/articles/ArticleCard.astro";
+
+const allArticles = (await getCollection("articles")).sort(
+  (a, b) => b.data.date.valueOf() - a.data.date.valueOf()
+);
+
+const featured = allArticles[0];
+const PAGE_SIZE = 5;
+---
+
+<Layout title="Articles — Yilong Logistics" description="Insights and updates from Yilong's logistics experts.">
+  <div class="articles-page">
+    <div class="articles-inner">
+
+      <!-- Breadcrumb -->
+      <nav class="breadcrumb" aria-label="Breadcrumb">
+        <a href="/"><span class="zh">首页</span><span class="en">Home</span></a>
+        <span class="sep">›</span>
+        <span><span class="zh">文章</span><span class="en">Articles</span></span>
+      </nav>
+
+      <!-- Top bar: heading left, search right -->
+      <div class="top-bar">
+        <h1 class="hero-heading">
+          <span class="zh">全球物流前沿叙事。</span>
+          <span class="en">Global Logistics<br/>Narratives.</span>
+        </h1>
+        <form class="search-form" role="search" id="search-form" onsubmit="return false">
+          <input
+            type="search"
+            id="search-input"
+            class="search-input"
+            placeholder-zh="搜索文章…"
+            placeholder-en="Search articles…"
+            aria-label="Search articles"
+            autocomplete="off"
+          />
+          <span class="search-icon">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+            </svg>
+          </span>
+        </form>
+      </div>
+
+      <!-- Featured article (full width, directly under heading) -->
+      {featured && (
+        <div class="featured-wrap" id="featured-wrap">
+          <ArticleCard
+            slug={featured.id}
+            title={featured.data.title}
+            titleZh={featured.data.titleZh}
+            date={featured.data.date}
+            excerpt={featured.data.excerpt}
+            excerptZh={featured.data.excerptZh}
+            heroImage={featured.data.heroImage}
+            tags={featured.data.tags}
+            tagsZh={featured.data.tagsZh}
+            variant="featured"
+          />
+        </div>
+      )}
+
+      <!-- Article list — all rows rendered, JS paginates + filters -->
+      <div class="article-list" id="article-list">
+        {allArticles.map((article) => (
+          <ArticleCard
+            slug={article.id}
+            title={article.data.title}
+            titleZh={article.data.titleZh}
+            date={article.data.date}
+            excerpt={article.data.excerpt}
+            excerptZh={article.data.excerptZh}
+            heroImage={article.data.heroImage}
+            tags={article.data.tags}
+            tagsZh={article.data.tagsZh}
+            variant="list"
+          />
+        ))}
+      </div>
+
+      <!-- No results message (hidden by default) -->
+      <p class="no-results" id="no-results" hidden>
+        <span class="zh">未找到相关文章。</span>
+        <span class="en">No articles found.</span>
+      </p>
+
+      <!-- Pagination -->
+      <div class="pagination" id="pagination" aria-label="Pagination"></div>
+
+    </div>
+  </div>
+</Layout>
+
+<script define:vars={{ PAGE_SIZE }}>
+  const input      = document.getElementById("search-input");
+  const featuredWrap = document.getElementById("featured-wrap");
+  const noResults  = document.getElementById("no-results");
+  const pagination = document.getElementById("pagination");
+
+  // All list rows (static rendered ArticleCard list variants)
+  const allRows = Array.from(
+    document.querySelectorAll("#article-list .card-list")
+  );
+
+  let currentPage = 1;
+  let activeRows  = allRows; // rows currently matching the search (or all)
+
+  // ── Placeholder sync ─────────────────────────────────────────────
+  function syncPlaceholders() {
+    const lang = document.documentElement.getAttribute("data-lang") ?? "en";
+    document.querySelectorAll("[placeholder-zh]").forEach((el) => {
+      el.placeholder = lang === "zh"
+        ? (el.getAttribute("placeholder-zh") ?? "")
+        : (el.getAttribute("placeholder-en") ?? "");
+    });
+  }
+  syncPlaceholders();
+  new MutationObserver(syncPlaceholders).observe(document.documentElement, {
+    attributes: true, attributeFilter: ["data-lang"],
+  });
+
+  // ── Render one page of rows ──────────────────────────────────────
+  function renderPage(rows, page) {
+    const start = (page - 1) * PAGE_SIZE;
+    const end   = start + PAGE_SIZE;
+    allRows.forEach((r) => (r.style.display = "none"));
+    rows.slice(start, end).forEach((r) => (r.style.display = ""));
+  }
+
+  // ── Build pagination controls ────────────────────────────────────
+  function renderPagination(rows, page) {
+    const totalPages = Math.ceil(rows.length / PAGE_SIZE);
+    if (totalPages <= 1) { pagination.innerHTML = ""; return; }
+
+    const lang = document.documentElement.getAttribute("data-lang") ?? "en";
+
+    let html = "";
+    // Prev
+    html += `<button class="pg-btn" data-page="${page - 1}" ${page === 1 ? "disabled" : ""} aria-label="Previous">‹</button>`;
+    // Page numbers
+    for (let i = 1; i <= totalPages; i++) {
+      html += `<button class="pg-btn ${i === page ? "active" : ""}" data-page="${i}">${i}</button>`;
+    }
+    // Next
+    html += `<button class="pg-btn" data-page="${page + 1}" ${page === totalPages ? "disabled" : ""} aria-label="Next">›</button>`;
+
+    pagination.innerHTML = html;
+
+    pagination.querySelectorAll(".pg-btn:not([disabled])").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        currentPage = parseInt(btn.dataset.page, 10);
+        renderPage(activeRows, currentPage);
+        renderPagination(activeRows, currentPage);
+        document.getElementById("article-list").scrollIntoView({ behavior: "smooth", block: "start" });
+      });
+    });
+  }
+
+  // ── Search ───────────────────────────────────────────────────────
+  function runSearch(query) {
+    const q = query.trim().toLowerCase();
+    currentPage = 1;
+
+    if (!q) {
+      activeRows = allRows;
+      featuredWrap && (featuredWrap.style.display = "");
+    } else {
+      activeRows = allRows.filter((row) =>
+        (row.dataset.search ?? "").includes(q)
+      );
+      featuredWrap && (featuredWrap.style.display = "none");
+    }
+
+    const hasResults = activeRows.length > 0;
+    noResults.style.display = hasResults ? "none" : "";
+
+    renderPage(activeRows, currentPage);
+    renderPagination(activeRows, currentPage);
+  }
+
+  // Initial render
+  runSearch("");
+
+  input?.addEventListener("input", (e) => runSearch(e.target.value));
+
+  // Re-render on language switch (search text stays, results re-display)
+  new MutationObserver(() => {
+    syncPlaceholders();
+    renderPagination(activeRows, currentPage);
+  }).observe(document.documentElement, { attributes: true, attributeFilter: ["data-lang"] });
+</script>
+
+<style>
+  .articles-page {
+    background: #FAFAFA;
+    min-height: 60vh;
+    padding: 40px 24px 80px;
+  }
+
+  .articles-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  /* Breadcrumb */
+  .breadcrumb {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 13px;
+    color: #7A7A7A;
+    margin-bottom: 28px;
+  }
+  .breadcrumb a { text-decoration: none; color: #7A7A7A; transition: color 0.15s; }
+  .breadcrumb a:hover { color: #E16D28; }
+  .breadcrumb .sep { color: #bbb; }
+
+  /* Top bar */
+  .top-bar {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 24px;
+    margin-bottom: 32px;
+    flex-wrap: wrap;
+  }
+
+  .hero-heading {
+    font-size: clamp(32px, 4vw, 52px);
+    font-weight: 800;
+    color: #1A1A1A;
+    margin: 0;
+    line-height: 1.1;
+  }
+
+  /* Search */
+  .search-form {
+    display: flex;
+    align-items: center;
+    background: #fff;
+    border: 1.5px solid #ddd;
+    border-radius: 8px;
+    overflow: hidden;
+    width: 280px;
+    flex-shrink: 0;
+    transition: border-color 0.2s;
+  }
+  .search-form:focus-within { border-color: #E16D28; }
+
+  .search-input {
+    flex: 1;
+    border: none;
+    outline: none;
+    padding: 10px 14px;
+    font-size: 14px;
+    background: transparent;
+    color: #1A1A1A;
+  }
+  .search-input::placeholder { color: #b0b0b0; }
+
+  .search-icon {
+    padding: 0 14px;
+    color: #7A7A7A;
+    display: flex;
+    align-items: center;
+    pointer-events: none;
+  }
+
+  /* Featured */
+  .featured-wrap { margin-bottom: 48px; }
+
+  /* Article list */
+  .article-list { border-top: 2px solid #eee; }
+
+  /* No results */
+  .no-results {
+    color: #7A7A7A;
+    font-size: 15px;
+    padding: 32px 0;
+    margin: 0;
+  }
+
+  /* Pagination */
+  .pagination {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    margin-top: 40px;
+  }
+
+  .pg-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 36px;
+    height: 36px;
+    padding: 0 10px;
+    border: 1.5px solid #ddd;
+    border-radius: 6px;
+    background: #fff;
+    font-size: 14px;
+    font-weight: 600;
+    color: #4A4A4A;
+    cursor: pointer;
+    transition: border-color 0.15s, color 0.15s, background 0.15s;
+  }
+
+  .pg-btn:hover:not([disabled]) {
+    border-color: #E16D28;
+    color: #E16D28;
+  }
+
+  .pg-btn.active {
+    background: #E16D28;
+    border-color: #E16D28;
+    color: #fff;
+  }
+
+  .pg-btn[disabled] {
+    opacity: 0.35;
+    cursor: default;
+  }
+
+  @media (max-width: 640px) {
+    .top-bar { flex-direction: column; align-items: flex-start; }
+    .search-form { width: 100%; }
+  }
+</style>

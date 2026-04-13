@@ -1,0 +1,180 @@
+---
+import worldSvgRaw from "../../assets/world.svg?raw";
+// Fix 1: lowercase `viewbox` → `viewBox` so the browser recognises the coordinate system.
+// Fix 2: strip hardcoded width/height attributes so CSS fully controls the dimensions.
+const worldSvg = worldSvgRaw
+  .replace(/\bviewbox=/i, "viewBox=")
+  .replace(/\bwidth="2000"/, "")
+  .replace(/\bheight="857"/, "");
+---
+
+<section class="worldmap-section">
+  <h2 class="worldmap-title">
+    <span class="zh">我们的全球网络</span>
+    <span class="en">Our Global Network</span>
+  </h2>
+
+  <div class="map-wrap" id="map-wrap">
+    <Fragment set:html={worldSvg} />
+    <!-- Tooltip -->
+    <div class="map-tooltip" id="map-tooltip" aria-hidden="true"></div>
+  </div>
+</section>
+
+<script>
+  const wrap = document.getElementById("map-wrap")!;
+  const tooltip = document.getElementById("map-tooltip")!;
+
+  // Derive a country name from an SVG path element
+  function getCountryName(path: SVGPathElement): string | null {
+    // Some paths carry a `name` attribute (e.g. Mexico, Vietnam)
+    const nameAttr = path.getAttribute("name");
+    if (nameAttr) return nameAttr;
+    // Others use a descriptive class (e.g. "China", "United States", "Russian Federation")
+    const cls = path.getAttribute("class");
+    if (cls) return cls;
+    // Fall back to id-based lookup
+    const id = path.getAttribute("id");
+    if (id) return id;
+    return null;
+  }
+
+  // Show tooltip near the cursor
+  function showTooltip(e: MouseEvent, label: string) {
+    tooltip.textContent = label;
+    tooltip.classList.add("visible");
+    moveTooltip(e);
+  }
+
+  function moveTooltip(e: MouseEvent) {
+    const rect = wrap.getBoundingClientRect();
+    let x = e.clientX - rect.left + 12;
+    let y = e.clientY - rect.top - 36;
+
+    // Keep within bounds
+    const tipW = tooltip.offsetWidth || 120;
+    if (x + tipW > rect.width - 8) x = e.clientX - rect.left - tipW - 12;
+    if (y < 4) y = e.clientY - rect.top + 16;
+
+    tooltip.style.left = x + "px";
+    tooltip.style.top = y + "px";
+  }
+
+  function hideTooltip() {
+    tooltip.classList.remove("visible");
+  }
+
+  // Attach listeners to every <path> inside the inlined SVG
+  wrap.querySelectorAll<SVGPathElement>("path").forEach((path) => {
+    path.addEventListener("mouseenter", (e) => {
+      const name = getCountryName(path);
+      if (name) showTooltip(e as MouseEvent, name);
+    });
+    path.addEventListener("mousemove", (e) => {
+      if (tooltip.classList.contains("visible")) moveTooltip(e as MouseEvent);
+    });
+    path.addEventListener("mouseleave", hideTooltip);
+  });
+</script>
+
+<style>
+  .worldmap-section {
+    background: #fff;
+    padding: 64px 0 0;
+    overflow: hidden;
+  }
+
+  .worldmap-title {
+    text-align: center;
+    font-size: clamp(22px, 3vw, 30px);
+    font-weight: 700;
+    color: #1A1A1A;
+    margin: 0 0 40px;
+    padding: 0 24px;
+  }
+
+  /* Full-width map — no max-width so the SVG gets the full viewport */
+  .map-wrap {
+    position: relative;
+    width: 100%;
+    /* preserve 2000:857 aspect ratio */
+    aspect-ratio: 2000 / 857;
+  }
+
+  .map-wrap svg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: block;
+  }
+
+  /* Default country fill */
+  .map-wrap :global(svg) {
+    fill: #d8d8d8;
+    stroke: #fff;
+    stroke-width: 0.3;
+  }
+
+  /* Highlighted countries (class-based) */
+  .map-wrap :global(path.China),
+  .map-wrap :global(path[class="United States"]),
+  .map-wrap :global(path.Canada),
+  .map-wrap :global(path[class="Russian Federation"]) {
+    fill: #E16D28;
+  }
+
+  /* Highlighted countries (id-based: Mexico, Vietnam) */
+  .map-wrap :global(path#MX),
+  .map-wrap :global(path#VN) {
+    fill: #E16D28;
+  }
+
+  /* Hover — all paths */
+  .map-wrap :global(path:hover) {
+    fill: #F5A87C;
+    cursor: pointer;
+  }
+
+  /* Keep highlighted countries using a brighter hover tone */
+  .map-wrap :global(path.China:hover),
+  .map-wrap :global(path[class="United States"]:hover),
+  .map-wrap :global(path.Canada:hover),
+  .map-wrap :global(path[class="Russian Federation"]:hover),
+  .map-wrap :global(path#MX:hover),
+  .map-wrap :global(path#VN:hover) {
+    fill: #C95E20;
+  }
+
+  /* Tooltip */
+  .map-tooltip {
+    position: absolute;
+    pointer-events: none;
+    background: #1A1A1A;
+    color: #fff;
+    font-size: 12px;
+    font-weight: 600;
+    padding: 5px 10px;
+    border-radius: 5px;
+    white-space: nowrap;
+    opacity: 0;
+    transition: opacity 0.15s;
+    z-index: 10;
+  }
+
+  .map-tooltip::after {
+    content: "";
+    position: absolute;
+    bottom: -5px;
+    left: 12px;
+    border-width: 5px 5px 0;
+    border-style: solid;
+    border-color: #1A1A1A transparent transparent;
+  }
+
+  .map-tooltip.visible {
+    opacity: 1;
+  }
+
+</style>

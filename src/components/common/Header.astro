@@ -1,0 +1,356 @@
+---
+import logo from "../../assets/logo.png";
+
+const navLinks = [
+  {
+    label: { zh: "我们的服务", en: "Our Service" },
+    href: "#",
+    hasDropdown: true,
+    dropdown: [
+      { label: { zh: "海运", en: "Sea Freight" }, href: "#" },
+      { label: { zh: "空运", en: "Air Freight" }, href: "#" },
+      { label: { zh: "陆运", en: "Land Freight" }, href: "#" },
+    ],
+  },
+  {
+    label: { zh: "文章", en: "Articles" },
+    href: "/articles",
+    hasDropdown: false,
+  },
+  {
+    label: { zh: "关于我们", en: "About Us" },
+    href: "/about_contact",
+    hasDropdown: false,
+  },
+];
+---
+
+<header class="header">
+  <div class="header-inner">
+    <!-- Logo -->
+    <a href="/" class="logo-link" aria-label="Yilong Home">
+      <img src={logo.src} alt="Yilong Logo" class="logo" />
+    </a>
+
+    <!-- Desktop Nav -->
+    <nav class="nav" aria-label="Main navigation">
+      {navLinks.map((link) => (
+        <div class={`nav-item ${link.hasDropdown ? "has-dropdown" : ""}`}>
+          <a href={link.href} class="nav-link">
+            <span class="zh">{link.label.zh}</span>
+            <span class="en">{link.label.en}</span>
+            {link.hasDropdown && (
+              <svg class="chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="6 9 12 15 18 9"/>
+              </svg>
+            )}
+          </a>
+          {link.hasDropdown && link.dropdown && (
+            <div class="dropdown">
+              {link.dropdown.map((item) => (
+                <a href={item.href} class="dropdown-item">
+                  <span class="zh">{item.label.zh}</span>
+                  <span class="en">{item.label.en}</span>
+                </a>
+              ))}
+            </div>
+          )}
+        </div>
+      ))}
+    </nav>
+
+    <!-- Language Switcher -->
+    <div class="lang-switcher">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="globe-icon">
+        <circle cx="12" cy="12" r="10"/>
+        <line x1="2" y1="12" x2="22" y2="12"/>
+        <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
+      </svg>
+      <button class="lang-btn active" data-lang="zh" aria-label="Switch to Chinese">CH</button>
+      <button class="lang-btn" data-lang="en" aria-label="Switch to English">EN</button>
+    </div>
+
+    <!-- Mobile Hamburger -->
+    <button class="hamburger" aria-label="Open menu" aria-expanded="false">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+  </div>
+
+  <!-- Mobile Nav -->
+  <div class="mobile-nav" id="mobile-nav">
+    {navLinks.map((link) => (
+      <div class="mobile-nav-section">
+        <a href={link.href} class="mobile-nav-link">
+          <span class="zh">{link.label.zh}</span>
+          <span class="en">{link.label.en}</span>
+        </a>
+        {link.hasDropdown && link.dropdown && (
+          <div class="mobile-sub">
+            {link.dropdown.map((item) => (
+              <a href={item.href} class="mobile-sub-link">
+                <span class="zh">{item.label.zh}</span>
+                <span class="en">{item.label.en}</span>
+              </a>
+            ))}
+          </div>
+        )}
+      </div>
+    ))}
+    <div class="mobile-lang">
+      <button class="lang-btn active" data-lang="zh">CH</button>
+      <button class="lang-btn" data-lang="en">EN</button>
+    </div>
+  </div>
+</header>
+
+<script>
+  // Language switcher
+  function applyLang(lang: string) {
+    document.documentElement.setAttribute("data-lang", lang);
+    document.querySelectorAll(".lang-btn").forEach((btn) => {
+      btn.classList.toggle("active", (btn as HTMLElement).dataset.lang === lang);
+    });
+    localStorage.setItem("yilong-lang", lang);
+  }
+
+  const savedLang = localStorage.getItem("yilong-lang") ?? "zh";
+  applyLang(savedLang);
+
+  document.querySelectorAll(".lang-btn").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      applyLang((btn as HTMLElement).dataset.lang ?? "zh");
+    });
+  });
+
+  // Mobile menu toggle
+  const hamburger = document.querySelector(".hamburger") as HTMLButtonElement;
+  const mobileNav = document.getElementById("mobile-nav");
+  hamburger?.addEventListener("click", () => {
+    const open = mobileNav?.classList.toggle("open");
+    hamburger.setAttribute("aria-expanded", String(open));
+  });
+</script>
+
+<style>
+  .header {
+    background: #fff;
+    border-bottom: 1px solid #eee;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+
+  .header-inner {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    align-items: center;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 24px;
+    height: 64px;
+    gap: 16px;
+  }
+
+  .logo-link {
+    flex-shrink: 0;
+  }
+
+  .logo {
+    height: 40px;
+    width: auto;
+    display: block;
+  }
+
+  /* Nav */
+  .nav {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+  }
+
+  .nav-item {
+    position: relative;
+  }
+
+  .nav-link {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    padding: 8px 16px;
+    text-decoration: none;
+    color: #1A1A1A;
+    font-size: 15px;
+    font-weight: 500;
+    border-radius: 6px;
+    transition: color 0.2s, background 0.2s;
+    white-space: nowrap;
+  }
+
+  .nav-link:hover {
+    color: #E16D28;
+    background: #FFF1E2;
+  }
+
+  .chevron {
+    transition: transform 0.2s;
+    color: #7A7A7A;
+  }
+
+  .has-dropdown:hover .chevron {
+    transform: rotate(180deg);
+  }
+
+  /* Dropdown */
+  .dropdown {
+    position: absolute;
+    top: calc(100% + 4px);
+    left: 0;
+    background: #fff;
+    border: 1px solid #eee;
+    border-radius: 8px;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+    min-width: 160px;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-6px);
+    transition: opacity 0.2s, transform 0.2s, visibility 0.2s;
+    z-index: 200;
+  }
+
+  .has-dropdown:hover .dropdown {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+  }
+
+  .dropdown-item {
+    display: block;
+    padding: 10px 16px;
+    text-decoration: none;
+    color: #1A1A1A;
+    font-size: 14px;
+    transition: color 0.15s, background 0.15s;
+  }
+
+  .dropdown-item:first-child {
+    border-radius: 8px 8px 0 0;
+  }
+  .dropdown-item:last-child {
+    border-radius: 0 0 8px 8px;
+  }
+
+  .dropdown-item:hover {
+    color: #E16D28;
+    background: #FFF1E2;
+  }
+
+  /* Language switcher */
+  .lang-switcher {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    border: 1px solid #ddd;
+    border-radius: 20px;
+    padding: 4px 12px;
+  }
+
+  .globe-icon {
+    color: #4A4A4A;
+  }
+
+  .lang-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: 600;
+    color: #7A7A7A;
+    padding: 2px 4px;
+    border-radius: 4px;
+    transition: color 0.15s;
+  }
+
+  .lang-btn.active {
+    color: #1A1A1A;
+  }
+
+  .lang-btn:hover {
+    color: #E16D28;
+  }
+
+  /* Hamburger */
+  .hamburger {
+    display: none;
+    flex-direction: column;
+    gap: 5px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 4px;
+    margin-left: auto;
+  }
+
+  .hamburger span {
+    display: block;
+    width: 22px;
+    height: 2px;
+    background: #1A1A1A;
+    border-radius: 2px;
+    transition: transform 0.2s;
+  }
+
+  /* Mobile nav */
+  .mobile-nav {
+    display: none;
+    flex-direction: column;
+    background: #fff;
+    border-top: 1px solid #eee;
+    padding: 12px 24px 20px;
+  }
+
+  .mobile-nav.open {
+    display: flex;
+  }
+
+  .mobile-nav-link {
+    display: block;
+    padding: 12px 0;
+    text-decoration: none;
+    color: #1A1A1A;
+    font-size: 16px;
+    font-weight: 500;
+    border-bottom: 1px solid #f0f0f0;
+  }
+
+  .mobile-sub {
+    padding: 4px 0 4px 16px;
+  }
+
+  .mobile-sub-link {
+    display: block;
+    padding: 8px 0;
+    text-decoration: none;
+    color: #4A4A4A;
+    font-size: 14px;
+  }
+
+  .mobile-lang {
+    display: flex;
+    gap: 8px;
+    margin-top: 16px;
+  }
+
+  @media (max-width: 768px) {
+    .nav,
+    .lang-switcher {
+      display: none;
+    }
+
+    .hamburger {
+      display: flex;
+    }
+  }
+</style>

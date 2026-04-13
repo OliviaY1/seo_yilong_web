@@ -1,0 +1,86 @@
+---
+const stats = [
+  {
+    value: "18+",
+    label: { zh: "年行业经验", en: "Years Experience" },
+  },
+  {
+    value: "200+",
+    label: { zh: "服务国家", en: "Countries Served" },
+  },
+  {
+    value: "1M+",
+    label: { zh: "包裹已送达", en: "Parcels Delivered" },
+  },
+];
+---
+
+<section class="stats">
+  <div class="stats-inner">
+    {stats.map((s) => (
+      <div class="stat">
+        <span class="stat-value">{s.value}</span>
+        <span class="stat-label">
+          <span class="zh">{s.label.zh}</span>
+          <span class="en">{s.label.en}</span>
+        </span>
+      </div>
+    ))}
+  </div>
+</section>
+
+<style>
+  .stats {
+    background: #F2F2F2;
+    padding: 48px 24px;
+  }
+
+  .stats-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    text-align: center;
+  }
+
+  .stat {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 16px;
+  }
+
+  /* Divider between stats */
+  .stat:not(:last-child) {
+    border-right: 1px solid #ddd;
+  }
+
+  .stat-value {
+    font-size: clamp(36px, 5vw, 52px);
+    font-weight: 700;
+    color: #E16D28;
+    line-height: 1;
+  }
+
+  .stat-label {
+    font-size: 14px;
+    font-weight: 600;
+    color: #E16D28;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+
+  @media (max-width: 480px) {
+    .stats-inner {
+      grid-template-columns: 1fr;
+    }
+
+    .stat:not(:last-child) {
+      border-right: none;
+      border-bottom: 1px solid #ddd;
+      padding-bottom: 24px;
+    }
+  }
+</style>

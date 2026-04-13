@@ -1,0 +1,139 @@
+---
+import logo from "../../assets/logo.png";
+---
+
+<!-- Footer -->
+<footer class="footer">
+  <div class="footer-inner">
+    <a href="/" class="footer-logo" aria-label="Yilong Home">
+      <img src={logo.src} alt="Yilong Logo" class="footer-logo-img" />
+    </a>
+
+    <nav class="footer-nav" aria-label="Footer navigation">
+      <a href="/privacy" class="footer-link">
+        <span class="zh">隐私政策</span>
+        <span class="en">PRIVACY POLICY</span>
+      </a>
+      <a href="/terms" class="footer-link">
+        <span class="zh">服务条款</span>
+        <span class="en">TERMS OF SERVICE</span>
+      </a>
+      <a href="/about_contact" class="footer-link">
+        <span class="zh">联系我们</span>
+        <span class="en">CONTACT US</span>
+      </a>
+    </nav>
+
+    <!-- WeChat QR placeholder -->
+    <div class="footer-wechat">
+      <div class="wechat-qr">
+        <svg width="48" height="48" viewBox="0 0 48 48" fill="none">
+          <!-- QR placeholder grid -->
+          <rect width="48" height="48" rx="4" fill="#f0f0f0"/>
+          <!-- Corner squares -->
+          <rect x="4" y="4" width="14" height="14" rx="2" fill="#4A4A4A"/>
+          <rect x="7" y="7" width="8" height="8" fill="#fff"/>
+          <rect x="30" y="4" width="14" height="14" rx="2" fill="#4A4A4A"/>
+          <rect x="33" y="7" width="8" height="8" fill="#fff"/>
+          <rect x="4" y="30" width="14" height="14" rx="2" fill="#4A4A4A"/>
+          <rect x="7" y="33" width="8" height="8" fill="#fff"/>
+          <!-- Dots -->
+          <rect x="20" y="4" width="4" height="4" fill="#4A4A4A"/>
+          <rect x="24" y="8" width="4" height="4" fill="#4A4A4A"/>
+          <rect x="20" y="12" width="4" height="4" fill="#4A4A4A"/>
+          <rect x="20" y="20" width="4" height="4" fill="#4A4A4A"/>
+          <rect x="30" y="20" width="4" height="4" fill="#4A4A4A"/>
+          <rect x="38" y="20" width="6" height="4" fill="#4A4A4A"/>
+          <rect x="24" y="24" width="4" height="4" fill="#4A4A4A"/>
+          <rect x="30" y="28" width="4" height="4" fill="#4A4A4A"/>
+          <rect x="36" y="32" width="8" height="4" fill="#4A4A4A"/>
+          <rect x="24" y="36" width="4" height="4" fill="#4A4A4A"/>
+          <rect x="30" y="40" width="4" height="4" fill="#4A4A4A"/>
+        </svg>
+      </div>
+      <span class="wechat-label">
+        <span class="zh">微信</span>
+        <span class="en">WeChat</span>
+      </span>
+    </div>
+  </div>
+</footer>
+
+<style>
+  /* Footer */
+  .footer {
+    background: #fff;
+    border-top: 1px solid #eee;
+  }
+
+  .footer-inner {
+    display: flex;
+    align-items: center;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 24px 24px;
+    gap: 32px;
+  }
+
+  .footer-logo {
+    flex-shrink: 0;
+  }
+
+  .footer-logo-img {
+    height: 36px;
+    width: auto;
+  }
+
+  .footer-nav {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    flex: 1;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  .footer-link {
+    text-decoration: none;
+    color: #7A7A7A;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    transition: color 0.15s;
+  }
+
+  .footer-link:hover {
+    color: #E16D28;
+  }
+
+  .footer-wechat {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    flex-shrink: 0;
+  }
+
+  .wechat-qr {
+    width: 56px;
+    height: 56px;
+  }
+
+  .wechat-label {
+    font-size: 11px;
+    color: #7A7A7A;
+    font-weight: 500;
+  }
+
+  @media (max-width: 640px) {
+    .footer-inner {
+      flex-direction: column;
+      text-align: center;
+    }
+
+    .footer-nav {
+      gap: 16px;
+    }
+  }
+</style>

@@ -1,0 +1,232 @@
+---
+import airFreightImg from "../../assets/air_freight.jpg";
+import seaFreightImg from "../../assets/sea_freight.jpg";
+
+const services = [
+  {
+    key: "air",
+    title: { zh: "空运", en: "Air Freight" },
+    desc: {
+      zh: "保证时效的紧急快递服务，全球优先处理。",
+      en: "Urgent delivery solutions with guaranteed time-slots and global priority handling.",
+    },
+    img: airFreightImg.src,
+    href: "#",
+  },
+  {
+    key: "sea",
+    title: { zh: "海运", en: "Sea Freight" },
+    desc: {
+      zh: "覆盖主要全球贸易航线的整柜及拼柜服务。",
+      en: "Full-container and LCL solutions across major global trade lanes.",
+    },
+    img: seaFreightImg.src,
+    href: "#",
+  },
+];
+---
+
+<section class="services">
+  <div class="services-inner">
+    <!-- Header row -->
+    <div class="services-header">
+      <div class="services-heading-group">
+        <span class="services-label">
+          <span class="zh">我们的全球服务</span>
+          <span class="en">OUR GLOBAL SERVICES</span>
+        </span>
+        <h2 class="services-title">
+          <span class="zh">无缝连接，跨越每一个边界。</span>
+          <span class="en">Seamless connectivity across every frontier.</span>
+        </h2>
+      </div>
+      <a href="#" class="explore-btn">
+        <span class="zh">探索解决方案</span>
+        <span class="en">explore solutions</span>
+      </a>
+    </div>
+
+    <!-- Service cards -->
+    <div class="cards">
+      {services.map((s) => (
+        <a href={s.href} class={`card card--${s.key}`} aria-label={s.title.en}>
+          <div class="card-img" style={`background-image: url(${s.img})`}></div>
+          <div class="card-overlay"></div>
+          <div class="card-body">
+            <div class="card-icon" aria-hidden="true">
+              {s.key === "air" ? (
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M17.8 19.2 16 11l3.5-3.5C21 6 21 4 19 4c-.7 0-1.4.3-1.9.7L13 8 4.8 6.2c-.5-.1-.9.1-1.1.5l-.3.5c-.2.5-.1 1 .3 1.3L9 12l-2 3H4l-1 1 3 2 2 3 1-1v-3l3-2 3.5 5.3c.3.4.8.5 1.3.3l.5-.2c.4-.3.6-.7.5-1.2z"/>
+                </svg>
+              ) : (
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M2 20h20M5 20V8h14v12"/>
+                  <path d="M12 20v-8"/>
+                  <path d="M9 12h6"/>
+                  <path d="M3 8l9-5 9 5"/>
+                </svg>
+              )}
+            </div>
+            <h3 class="card-title">
+              <span class="zh">{s.title.zh}</span>
+              <span class="en">{s.title.en}</span>
+            </h3>
+            <p class="card-desc">
+              <span class="zh">{s.desc.zh}</span>
+              <span class="en">{s.desc.en}</span>
+            </p>
+          </div>
+        </a>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .services {
+    background: #fff;
+    padding: 64px 24px;
+  }
+
+  .services-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  /* Header */
+  .services-header {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 24px;
+    margin-bottom: 32px;
+    flex-wrap: wrap;
+  }
+
+  .services-heading-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .services-label {
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: #E16D28;
+  }
+
+  .services-title {
+    font-size: clamp(26px, 3.5vw, 38px);
+    font-weight: 700;
+    color: #1A1A1A;
+    margin: 0;
+    line-height: 1.2;
+    max-width: 520px;
+  }
+
+  .explore-btn {
+    flex-shrink: 0;
+    display: inline-block;
+    background: #E16D28;
+    color: #fff;
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: 600;
+    padding: 9px 20px;
+    border-radius: 20px;
+    transition: background 0.2s;
+    white-space: nowrap;
+    align-self: flex-end;
+  }
+
+  .explore-btn:hover {
+    background: #C95E20;
+  }
+
+  /* Cards grid — air freight larger (2/3), sea freight narrower (1/3) */
+  .cards {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 16px;
+  }
+
+  .card {
+    position: relative;
+    display: block;
+    border-radius: 12px;
+    overflow: hidden;
+    text-decoration: none;
+    aspect-ratio: auto;
+    min-height: 320px;
+  }
+
+  .card-img {
+    position: absolute;
+    inset: 0;
+    background-size: cover;
+    background-position: center;
+    transition: transform 0.4s ease;
+  }
+
+  .card:hover .card-img {
+    transform: scale(1.04);
+  }
+
+  /* Gradient overlay — dark at bottom for text legibility */
+  .card-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      to bottom,
+      rgba(0, 0, 0, 0) 40%,
+      rgba(0, 0, 0, 0.72) 100%
+    );
+  }
+
+  .card-body {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    height: 100%;
+    padding: 24px;
+    min-height: 320px;
+  }
+
+  .card-icon {
+    color: rgba(255, 255, 255, 0.85);
+    margin-bottom: 8px;
+  }
+
+  .card-title {
+    font-size: 20px;
+    font-weight: 700;
+    color: #fff;
+    margin: 0 0 8px;
+  }
+
+  .card-desc {
+    font-size: 13px;
+    color: rgba(255, 255, 255, 0.78);
+    margin: 0;
+    line-height: 1.5;
+  }
+
+  @media (max-width: 640px) {
+    .cards {
+      grid-template-columns: 1fr;
+    }
+
+    .card {
+      min-height: 260px;
+    }
+
+    .services-header {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+  }
+</style>

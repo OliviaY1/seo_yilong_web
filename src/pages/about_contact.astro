@@ -1,0 +1,465 @@
+---
+import Layout from "../layouts/Layout.astro";
+import chinaSvgRaw from "../assets/china.svg?raw";
+
+const chinaSvg = chinaSvgRaw
+  .replace(/\bviewbox=/i, "viewBox=")
+  .replace(/\bwidth="1000"/, "")
+  .replace(/\bheight="738"/, "");
+
+// Warehouse pin locations (as % of 1000×738 viewBox)
+const warehouses = [
+  { name: "Shanghai",  nameZh: "上海",  x: 75.61, y: 66.75 },
+  { name: "Zhejiang",  nameZh: "浙江",  x: 73.4,  y: 71.49 },
+  { name: "Guangdong", nameZh: "广东",  x: 63.8,  y: 82.64 },
+];
+---
+
+<Layout title="About Us & Contact — Yilong Logistics">
+  <div class="about-page">
+
+    <!-- ── Our Story ──────────────────────────────────────────── -->
+    <section class="section story-section">
+      <div class="container narrow">
+        <h2 class="section-title">
+          <span class="zh">我们的故事</span>
+          <span class="en">Our Story</span>
+        </h2>
+        <div class="story-body">
+          <p>
+            <span class="zh">义龙物流成立于2006年，最初是一家专注于跨太平洋航线的小型货代公司。凭借精准的时效承诺和对客户需求的深刻理解，我们在短短数年内将业务拓展至全球200余个国家。</span>
+            <span class="en">Founded in 2006, Yilong Logistics began as a small freight forwarding company focused on trans-Pacific routes. Through precise time commitments and a deep understanding of customer needs, we expanded our operations to over 200 countries within just a few years.</span>
+          </p>
+          <p>
+            <span class="zh">如今，义龙拥有超过18年的行业经验，服务客户逾18,000家，累计交付超过100万件包裹。我们的核心团队由资深物流专家组成，深耕中美、中越、中俄等主要贸易走廊，为客户提供海运、空运及多式联运一站式解决方案。</span>
+            <span class="en">Today, Yilong has over 18 years of industry experience, serving more than 18,000 clients with over 1 million parcels delivered. Our core team of seasoned logistics experts specialises in the China–US, China–Vietnam, and China–Russia trade corridors, offering one-stop sea freight, air freight, and multimodal solutions.</span>
+          </p>
+          <p>
+            <span class="zh">我们相信，物流的本质是信任。每一票货物背后，都是客户对我们的托付。义龙将始终以专业、高效、透明的服务回报这份信任。</span>
+            <span class="en">We believe the essence of logistics is trust. Behind every shipment is a client who has placed their confidence in us. Yilong is committed to honouring that trust through professional, efficient, and transparent service.</span>
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── Contact Us ─────────────────────────────────────────── -->
+    <section class="section contact-section">
+      <div class="container">
+        <h2 class="section-title">
+          <span class="zh">联系我们</span>
+          <span class="en">Contact Us</span>
+        </h2>
+
+        <div class="contact-grid">
+          <!-- Left: contact details -->
+          <div class="contact-details">
+            <div class="contact-item">
+              <p class="contact-label">
+                <span class="zh">客服热线（英语 & 普通话）</span>
+                <span class="en">Customer Service Line (English &amp; Mandarin)</span>
+              </p>
+              <a href="tel:+86xxxxxxxxxx" class="contact-value phone">+86 xxx xxxx xxx</a>
+            </div>
+
+            <div class="contact-item">
+              <p class="contact-label">Customer Service WhatsApp</p>
+              <a href="https://wa.me/86xxxxxxxxxx" class="contact-value phone">xxxxxxxx</a>
+            </div>
+
+            <div class="contact-item">
+              <p class="contact-label">Customer Service WeChat</p>
+              <span class="contact-value phone">xxxxxxxx</span>
+            </div>
+          </div>
+
+          <!-- Right: QR codes -->
+          <div class="qr-group">
+            <!-- WeChat QR -->
+            <div class="qr-item">
+              <div class="qr-box">
+                <svg width="80" height="80" viewBox="0 0 48 48" fill="none" aria-label="WeChat QR">
+                  <rect width="48" height="48" rx="3" fill="#f5f5f5"/>
+                  <rect x="4" y="4" width="14" height="14" rx="2" fill="#333"/>
+                  <rect x="7" y="7" width="8" height="8" fill="#fff"/>
+                  <rect x="30" y="4" width="14" height="14" rx="2" fill="#333"/>
+                  <rect x="33" y="7" width="8" height="8" fill="#fff"/>
+                  <rect x="4" y="30" width="14" height="14" rx="2" fill="#333"/>
+                  <rect x="7" y="33" width="8" height="8" fill="#fff"/>
+                  <rect x="20" y="4" width="4" height="4" fill="#333"/>
+                  <rect x="24" y="8" width="4" height="4" fill="#333"/>
+                  <rect x="20" y="12" width="4" height="4" fill="#333"/>
+                  <rect x="20" y="20" width="4" height="4" fill="#333"/>
+                  <rect x="28" y="20" width="4" height="4" fill="#333"/>
+                  <rect x="36" y="20" width="8" height="4" fill="#333"/>
+                  <rect x="24" y="24" width="4" height="4" fill="#333"/>
+                  <rect x="30" y="28" width="4" height="4" fill="#333"/>
+                  <rect x="36" y="32" width="8" height="4" fill="#333"/>
+                  <rect x="24" y="36" width="4" height="4" fill="#333"/>
+                  <rect x="30" y="40" width="4" height="4" fill="#333"/>
+                </svg>
+              </div>
+              <!-- WeChat icon label -->
+              <div class="qr-label">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                  <path d="M9.5 13a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zM12 2C6.477 2 2 6.477 2 12s4.477 10 10 10 10-4.477 10-10S17.523 2 12 2z"/>
+                </svg>
+                WeChat
+              </div>
+            </div>
+
+            <!-- WhatsApp QR -->
+            <div class="qr-item">
+              <div class="qr-box">
+                <svg width="80" height="80" viewBox="0 0 48 48" fill="none" aria-label="WhatsApp QR">
+                  <rect width="48" height="48" rx="3" fill="#f5f5f5"/>
+                  <rect x="4" y="4" width="14" height="14" rx="2" fill="#333"/>
+                  <rect x="7" y="7" width="8" height="8" fill="#fff"/>
+                  <rect x="30" y="4" width="14" height="14" rx="2" fill="#333"/>
+                  <rect x="33" y="7" width="8" height="8" fill="#fff"/>
+                  <rect x="4" y="30" width="14" height="14" rx="2" fill="#333"/>
+                  <rect x="7" y="33" width="8" height="8" fill="#fff"/>
+                  <rect x="20" y="4" width="4" height="4" fill="#333"/>
+                  <rect x="26" y="6" width="4" height="4" fill="#333"/>
+                  <rect x="20" y="14" width="8" height="4" fill="#333"/>
+                  <rect x="22" y="20" width="4" height="8" fill="#333"/>
+                  <rect x="30" y="22" width="4" height="4" fill="#333"/>
+                  <rect x="38" y="20" width="6" height="4" fill="#333"/>
+                  <rect x="26" y="28" width="4" height="4" fill="#333"/>
+                  <rect x="32" y="32" width="4" height="4" fill="#333"/>
+                  <rect x="38" y="28" width="6" height="8" fill="#333"/>
+                  <rect x="26" y="36" width="4" height="8" fill="#333"/>
+                </svg>
+              </div>
+              <div class="qr-label">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                  <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/>
+                  <path d="M11.998 0C5.372 0 0 5.373 0 12.001c0 2.117.554 4.103 1.523 5.826L.057 23.945l6.272-1.644A11.946 11.946 0 0 0 12 24c6.627 0 12-5.373 12-11.999C24 5.373 18.627 0 11.998 0z"/>
+                </svg>
+                WhatsApp
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── Our Offices ────────────────────────────────────────── -->
+    <section class="section offices-section">
+      <div class="container">
+        <h2 class="section-title">
+          <span class="zh">我们的办公室</span>
+          <span class="en">Our offices</span>
+        </h2>
+
+        <div class="offices-grid">
+          <div class="office-card">
+            <h3 class="office-city">
+              <span class="zh">深圳（联系方式）</span>
+              <span class="en">Shenzhen Contact</span>
+            </h3>
+            <p class="office-detail">phone: +86 xxx xxxx xxx</p>
+            <p class="office-detail">email: xxx@gmail.com</p>
+            <p class="office-detail">
+              <span class="zh">地址：xxxx</span>
+              <span class="en">address: xxxx</span>
+            </p>
+          </div>
+
+          <div class="office-card office-card--hq">
+            <h3 class="office-city">
+              <span class="zh">上海（总部）</span>
+              <span class="en">Shanghai Contact (headquarters)</span>
+            </h3>
+            <p class="office-detail">phone: +86 xxx xxxx xxx</p>
+            <p class="office-detail">email: xxx@gmail.com</p>
+            <p class="office-detail">
+              <span class="zh">地址：xxxx</span>
+              <span class="en">address: xxxx</span>
+            </p>
+          </div>
+
+          <div class="office-card">
+            <h3 class="office-city">
+              <span class="zh">重庆（联系方式）</span>
+              <span class="en">Chongqing Contact</span>
+            </h3>
+            <p class="office-detail">phone: +86 xxx xxxx xxx</p>
+            <p class="office-detail">email: xxx@gmail.com</p>
+            <p class="office-detail">
+              <span class="zh">地址：xxxx</span>
+              <span class="en">address: xxxx</span>
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── Warehouses in China ────────────────────────────────── -->
+    <section class="section warehouse-section">
+      <div class="container">
+        <h2 class="section-title">
+          <span class="zh">中国仓库分布</span>
+          <span class="en">Our Warehouses in China</span>
+        </h2>
+
+        <div class="map-wrap" id="china-map-wrap">
+          <Fragment set:html={chinaSvg} />
+
+          <!-- Warehouse pins -->
+          {warehouses.map((w) => (
+            <div
+              class="map-pin"
+              style={`left:${w.x}%;top:${w.y}%`}
+              data-name={w.name}
+              data-name-zh={w.nameZh}
+              aria-label={w.name}
+            >
+              <svg width="22" height="28" viewBox="0 0 22 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M11 0C5.477 0 1 4.477 1 10c0 7.5 10 18 10 18s10-10.5 10-18c0-5.523-4.477-10-10-10z" fill="#E16D28"/>
+                <circle cx="11" cy="10" r="4" fill="white"/>
+              </svg>
+              <div class="pin-tooltip">
+                <span class="zh">{w.nameZh}</span>
+                <span class="en">{w.name}</span>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+
+  </div>
+</Layout>
+
+<style>
+  .about-page {
+    background: #FAFAFA;
+  }
+
+  /* ── Shared ──────────────────────────────────────────────── */
+  .section {
+    padding: 72px 24px;
+  }
+
+  .container {
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+
+  .container.narrow {
+    max-width: 760px;
+  }
+
+  .section-title {
+    font-size: clamp(26px, 3.5vw, 36px);
+    font-weight: 700;
+    color: #1A1A1A;
+    text-align: center;
+    margin: 0 0 40px;
+  }
+
+  /* ── Our Story ───────────────────────────────────────────── */
+  .story-section {
+    background: #fff;
+    border-bottom: 1px solid #eee;
+  }
+
+  .story-body p {
+    font-size: 15px;
+    line-height: 1.85;
+    color: #2A2A2A;
+    margin: 0 0 1.2em;
+  }
+
+  /* ── Contact ─────────────────────────────────────────────── */
+  .contact-section {
+    background: #fff;
+  }
+
+  .contact-grid {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 64px;
+    align-items: start;
+  }
+
+  .contact-details {
+    display: flex;
+    flex-direction: column;
+    gap: 28px;
+  }
+
+  .contact-item {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .contact-label {
+    font-size: 14px;
+    color: #4A4A4A;
+    margin: 0;
+  }
+
+  .contact-value {
+    font-size: 20px;
+    font-weight: 700;
+    color: #E16D28;
+    text-decoration: none;
+  }
+
+  .contact-value:hover {
+    color: #C95E20;
+  }
+
+  /* QR codes */
+  .qr-group {
+    display: flex;
+    gap: 32px;
+    align-items: flex-start;
+    flex-shrink: 0;
+  }
+
+  .qr-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .qr-box {
+    border: 1px solid #eee;
+    border-radius: 8px;
+    padding: 8px;
+    background: #fff;
+  }
+
+  .qr-label {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 12px;
+    font-weight: 600;
+    color: #4A4A4A;
+  }
+
+  /* ── Offices ─────────────────────────────────────────────── */
+  .offices-section {
+    background: #FAFAFA;
+    border-top: 1px solid #eee;
+  }
+
+  .offices-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+  }
+
+  .office-card {
+    padding: 24px;
+    border: 1px solid #eee;
+    border-radius: 10px;
+    background: #fff;
+  }
+
+  .office-card--hq {
+    border-color: #E16D28;
+  }
+
+  .office-city {
+    font-size: 14px;
+    font-weight: 700;
+    color: #1A1A1A;
+    margin: 0 0 12px;
+  }
+
+  .office-detail {
+    font-size: 13px;
+    color: #4A4A4A;
+    margin: 0 0 4px;
+    line-height: 1.5;
+  }
+
+  /* ── Warehouses map ──────────────────────────────────────── */
+  .warehouse-section {
+    background: #F2F2F2;
+    border-top: 1px solid #eee;
+  }
+
+  .warehouse-subtitle {
+    text-align: center;
+    font-size: 13px;
+    color: #9A9A9A;
+    margin: -28px 0 28px;
+  }
+
+  .map-wrap {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 1000 / 738;
+    max-width: 800px;
+    margin: 0 auto;
+  }
+
+  /* SVG is inlined via set:html so needs :global to match */
+  .map-wrap :global(svg) {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    fill: #d0d0d0;
+    stroke: #fff;
+  }
+
+  /* Pin */
+  .map-pin {
+    position: absolute;
+    transform: translate(-50%, -100%);
+    cursor: pointer;
+    z-index: 10;
+  }
+
+  .map-pin:hover .pin-tooltip {
+    opacity: 1;
+    transform: translateX(-50%) translateY(-4px);
+  }
+
+  .pin-tooltip {
+    position: absolute;
+    bottom: calc(100% + 4px);
+    left: 50%;
+    transform: translateX(-50%) translateY(0);
+    background: #1A1A1A;
+    color: #fff;
+    font-size: 12px;
+    font-weight: 600;
+    padding: 4px 10px;
+    border-radius: 5px;
+    white-space: nowrap;
+    opacity: 0;
+    transition: opacity 0.15s, transform 0.15s;
+    pointer-events: none;
+  }
+
+  .pin-tooltip::after {
+    content: "";
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    border: 5px solid transparent;
+    border-top-color: #1A1A1A;
+  }
+
+  @media (max-width: 768px) {
+    .contact-grid {
+      grid-template-columns: 1fr;
+    }
+    .qr-group {
+      justify-content: center;
+    }
+    .offices-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
