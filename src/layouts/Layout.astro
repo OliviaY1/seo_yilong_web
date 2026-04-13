@@ -1,23 +1,84 @@
+---
+import NoticeBar from "../components/common/NoticeBar.astro";
+import Header from "../components/common/Header.astro";
+import Bottom from "../components/common/Bottom.astro";
+
+interface Props {
+  title?: string;
+  description?: string;
+  noticeMessage?: string;
+  noticeHref?: string;
+}
+
+const {
+  title = "Yilong Logistics",
+  description = "Seamless connectivity across every frontier.",
+  noticeMessage,
+  noticeHref,
+} = Astro.props;
+---
+
 <!doctype html>
-<html lang="en">
-	<head>
-		<meta charset="UTF-8" />
-		<meta name="viewport" content="width=device-width" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<link rel="icon" href="/favicon.ico" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro Basics</title>
-	</head>
-	<body>
-		<slot />
-	</body>
+<html lang="zh">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" href="/favicon.ico" />
+    <meta name="generator" content={Astro.generator} />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  </head>
+  <body>
+    <NoticeBar message={noticeMessage} href={noticeHref} />
+    <Header />
+    <main>
+      <slot />
+    </main>
+    <Bottom />
+  </body>
 </html>
 
-<style>
-	html,
-	body {
-		margin: 0;
-		width: 100%;
-		height: 100%;
-	}
+<style is:global>
+  *, *::before, *::after {
+    box-sizing: border-box;
+  }
+
+  html, body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    background-color: #FAFAFA;
+    color: #1A1A1A;
+    font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  main {
+    min-height: 60vh;
+  }
+
+  img {
+    max-width: 100%;
+    height: auto;
+  }
+
+  a {
+    color: inherit;
+  }
+
+  /* ── Language visibility ────────────────────────────────────────────
+     All .zh / .en spans are toggled here globally so component-scoped
+     CSS cannot interfere. JS sets data-lang on <html>.
+     Default (before JS runs): show EN, hide ZH.
+  ──────────────────────────────────────────────────────────────────── */
+  html:not([data-lang]) .zh { display: none; }
+
+  html[data-lang="en"] .zh { display: none; }
+  html[data-lang="en"] .en { display: revert; }
+
+  html[data-lang="zh"] .en { display: none; }
+  html[data-lang="zh"] .zh { display: revert; }
 </style>
